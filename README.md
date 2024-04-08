@@ -40,7 +40,3 @@ We welcome contributions of all forms. Please read our contributing guidelines f
 
 ## License
 Licensed under the GNU Affero General Public License v3 (AGPL-3.0). See [LICENSE](LICENSE).
-
-## Contact
-- Ant O, Greene - Reel0112358.13@proton.me
-- Project Link: http://github.com/HermiTech-LLC/Hehners_math
