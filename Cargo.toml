@@ -1,0 +1,11 @@
+[package]
+name = "Hehners_math"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ant O, Greene <Reel0112358.13@proton.me>"]
+description = "A Rust library for handling numbers with associated uncertainty."
+repository = "http://github.com/HermiTech-LLC/Hehners_math"
+license = "AGPL-3.0"
+
+[dependencies]
+cpython = "0.7"
