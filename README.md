@@ -1,6 +1,6 @@
 
 # Hehners_math
-
+![HEHm](https://github.com/HermiTech-LLC/Hehners_math/blob/main/HEHm.JPG)
 ## Overview
 "Hehners_math" is a Rust-based comprehensive math module, particularly focused on Hehner's unified algebra. It provides a robust framework for handling numbers with uncertainties, supporting a wide range of arithmetic and advanced mathematical operations.
 
