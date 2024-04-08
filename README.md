@@ -34,9 +34,5 @@ fn main() {
     // ...
 }
 ```
-
-## Contributing
-We welcome contributions of all forms. Please read our contributing guidelines for more information.
-
 ## License
 Licensed under the GNU Affero General Public License v3 (AGPL-3.0). See [LICENSE](LICENSE).
