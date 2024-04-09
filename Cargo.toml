@@ -9,3 +9,11 @@ license = "AGPL-3.0"
 
 [dependencies]
 cpython = "0.7"
+
+[lib]
+name = "hehners_math"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+bindgen = "0.59.1"  # Add the version you need
+# cbindgen = "0.20.0"  # Uncomment if you prefer cbindgen
