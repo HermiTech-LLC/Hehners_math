@@ -1,7 +1,7 @@
 extern crate cpython;
 
 use cpython::{PyResult, Python, PyObject, py_module_initializer, PyClone, PythonObject};
-use std::f64::consts::PI;
+use std::f64::{self, consts::PI};
 
 pub struct UnifiedNumber {
     value: f64,
@@ -130,7 +130,6 @@ impl UnifiedNumber {
         }
     }
 
-    // Example Hehner's algebra integration - symbolic representation
     pub fn choice(&self, other: &UnifiedNumber, condition: bool) -> UnifiedNumber {
         if condition {
             UnifiedNumber {
@@ -150,13 +149,129 @@ impl UnifiedNumber {
     pub fn display(&self) -> String {
         format!("Value: {}, Uncertainty: {}, Symbolic: {}", self.value, self.uncertainty, self.symbolic)
     }
+
+    pub fn ln(&self) -> Option<UnifiedNumber> {
+        if self.value <= 0.0 {
+            None
+        } else {
+            let value = self.value.ln();
+            let uncertainty = self.uncertainty / self.value;
+            Some(UnifiedNumber {
+                value,
+                uncertainty,
+                symbolic: format!("ln({})", self.symbolic),
+            })
+        }
+    }
+
+    pub fn exp(&self) -> UnifiedNumber {
+        let value = self.value.exp();
+        let uncertainty = self.uncertainty * value;
+        UnifiedNumber {
+            value,
+            uncertainty,
+            symbolic: format!("exp({})", self.symbolic),
+        }
+    }
+
+    pub fn sinh(&self) -> UnifiedNumber {
+        let value = self.value.sinh();
+        let uncertainty = self.uncertainty * self.value.cosh();
+        UnifiedNumber {
+            value,
+            uncertainty,
+            symbolic: format!("sinh({})", self.symbolic),
+        }
+    }
+
+    pub fn cosh(&self) -> UnifiedNumber {
+        let value = self.value.cosh();
+        let uncertainty = self.uncertainty * self.value.sinh();
+        UnifiedNumber {
+            value,
+            uncertainty,
+            symbolic: format!("cosh({})", self.symbolic),
+        }
+    }
+
+    pub fn tanh(&self) -> UnifiedNumber {
+        let value = self.value.tanh();
+        let uncertainty = self.uncertainty / self.value.cosh().powi(2);
+        UnifiedNumber {
+            value,
+            uncertainty,
+            symbolic: format!("tanh({})", self.symbolic),
+        }
+    }
+}
+pub struct UnifiedVector {
+    elements: Vec<UnifiedNumber>,
 }
 
-// Python module initialization and Python class definitions remain unchanged
+impl UnifiedVector {
+    pub fn new(elements: Vec<UnifiedNumber>) -> Self {
+        UnifiedVector { elements }
+    }
+
+    pub fn add(&self, other: &UnifiedVector) -> Option<UnifiedVector> {
+        if self.elements.len() != other.elements.len() {
+            None
+        } else {
+            self.elements.iter().zip(other.elements.iter()).map(|(a, b)| a.add(b)).collect::<Option<Vec<_>>>().map(UnifiedVector::new)
+        }
+    }
+
+    pub fn subtract(&self, other: &UnifiedVector) -> Option<UnifiedVector> {
+        if self.elements.len() != other.elements.len() {
+            None
+        } else {
+            self.elements.iter().zip(other.elements.iter()).map(|(a, b)| a.subtract(b)).collect::<Option<Vec<_>>>().map(UnifiedVector::new)
+        }
+    }
+
+    // Other vector operations can be added here
+}
+
+pub struct UnifiedMatrix {
+    rows: Vec<UnifiedVector>,
+}
+
+impl UnifiedMatrix {
+    pub fn new(rows: Vec<UnifiedVector>) -> Self {
+        UnifiedMatrix { rows }
+    }
+
+    pub fn add(&self, other: &UnifiedMatrix) -> Option<UnifiedMatrix> {
+        if self.rows.len() != other.rows.len() {
+            None
+        } else {
+            self.rows.iter().zip(other.rows.iter()).map(|(a, b)| a.add(b)).collect::<Option<Vec<_>>>().map(UnifiedMatrix::new)
+        }
+    }
+
+    pub fn subtract(&self, other: &UnifiedMatrix) -> Option<UnifiedMatrix> {
+        if self.rows.len() != other.rows.len() {
+            None
+        } else {
+            self.rows.iter().zip(other.rows.iter()).map(|(a, b)| a.subtract(b)).collect::<Option<Vec<_>>>().map(UnifiedMatrix::new)
+        }
+    }
+
+    // Other matrix operations can be added here
+}
 
 fn main() {
-    let num1 = UnifiedNumber::new(5.0, 0.1);
-    let num2 = UnifiedNumber::new(3.0, 0.2);
-    let result = num1.add(&num2);
-    println!("{}", result.display());
+    // Example usage of UnifiedNumber, UnifiedVector, UnifiedMatrix
+    let u_num1 = UnifiedNumber::new(2.0, 0.1);
+    let u_num2 = UnifiedNumber::new(3.0, 0.2);
+    let u_num3 = UnifiedNumber::new(4.0, 0.3);
+    let u_vector1 = UnifiedVector::new(vec![u_num1, u_num2]);
+    let u_vector2 = UnifiedVector::new(vec![u_num2, u_num3]);
+
+    match u_vector1.add(&u_vector2) {
+        Some(result) => println!("Vector addition result: {:?}", result),
+        None => println!("Vector addition failed due to size mismatch"),
+    }
+
+    // Further examples and operations can be implemented here
 }
