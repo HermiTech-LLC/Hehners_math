@@ -28,7 +28,7 @@ To install "Hehners_math," follow these steps:
 ```bash
 git clone http://github.com/HermiTech-LLC/Hehners_math.git
 cd Hehners_math
-cargo build
+cargo build --release
 ```
 
 ## Usage Example
